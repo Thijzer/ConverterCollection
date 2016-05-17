@@ -8,6 +8,7 @@ class DownloadStatus
     const SEEDING = 'seeding';
     const FINISHED = 'finished';
     const IDLE = 'idle';
+    const DOWNLOADING = 'downloading';
 
     private $name = '';
 
