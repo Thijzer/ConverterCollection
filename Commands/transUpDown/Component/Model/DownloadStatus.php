@@ -36,4 +36,9 @@ class DownloadStatus
     {
         return array_values(self::getConstants());
     }
+
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 }

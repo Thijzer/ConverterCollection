@@ -71,10 +71,14 @@ class TransUpDownCommand
     {
         $transmission = new Transmission();
         $downloadedItems = $transmission->getDownloads();
-        /** @var Download $download */
+
         foreach ($downloadedItems as $download) {
-            $name = $download->getName() .' '. $download->getDone();
-            //var_dump($download);
+            $name = implode(' | ', array(
+                $download->getId(),
+                $download->getName(),
+                $download->getDone(),
+                $download->getStatus()
+            ));
 
             $this->request->printLine($name);
         }
