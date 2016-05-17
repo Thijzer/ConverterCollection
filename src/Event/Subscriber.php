@@ -1,5 +1,10 @@
 <?php
 
+namespace Event;
+
+use Console\CommandRequest;
+use Tracking\TimeTracker;
+
 class Subscriber
 {
     private $tracker;

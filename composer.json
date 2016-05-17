@@ -1,0 +1,26 @@
+{
+    "name": "thijzer/commands",
+    "description": "console commands",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Thijs De Paepe",
+            "email": "thijs.dp@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Console\\": "src/Console/",
+            "Converter\\": "src/Converter/",
+            "Event\\": "src/Event/",
+            "Tracking\\": "src/Tracking/",
+            "Exception\\": "src/Exception/",
+            "FileManager\\": "src/FileManager/",
+            "Commands\\": "Commands/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "require": {}
+}

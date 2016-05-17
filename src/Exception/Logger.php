@@ -1,5 +1,7 @@
 <?php
 
+namespace Exception;
+
 class Logger
 {
     private $logger = array();

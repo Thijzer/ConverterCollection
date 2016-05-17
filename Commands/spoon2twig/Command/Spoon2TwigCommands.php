@@ -1,6 +1,6 @@
 <?php
 
-class Spoon2TwigCommand
+class Spoon2TwigCommands
 {
     /** @var CommandRequest  */
     private $commandRequest;

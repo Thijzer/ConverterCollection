@@ -47,7 +47,7 @@ class SpoonAdapter
     {
         $this->options = array_merge($options, $this->options);
         if (true === $this->options['absolute']) {
-            $this->source = __DIR__ . '/';
+            $this->source = __DIR__ . 'SpoonAdapter.php/';
         }
         $this->source .= $this->getCorrectSourceVersion($this->options['version']);
     }
