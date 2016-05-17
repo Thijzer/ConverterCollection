@@ -6,7 +6,7 @@ namespace Commands\transUpDown\Component\Reader;
 class TransmissionFileReader
 {
     private $transmission;
-    private $list;
+    private $list = array();
 
     public function __construct()
     {
