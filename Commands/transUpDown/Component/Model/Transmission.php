@@ -15,6 +15,8 @@ class Transmission
     public function __construct()
     {
         $this->reader = new TransmissionFileReader();
+
+        $items = array();
         foreach ($this->reader->getList() as $item) {
             $items[] = TransmissionMatcher::match($item);
         }
