@@ -54,7 +54,7 @@ class Download extends File
 
     public function isCompleted()
     {
-        return $this->done === 100 && $this->getStatus()->isFinished();
+        return $this->done === '100' && $this->getStatus()->isFinished();
     }
 
     /**

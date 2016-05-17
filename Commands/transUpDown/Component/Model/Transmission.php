@@ -24,7 +24,7 @@ class Transmission
     }
 
     /**
-     * @return \Commands\transUpDown\Component\Model\DownloadList
+     * @return \Commands\transUpDown\Component\Model\Download[]
      */
     public function getDownloads()
     {
