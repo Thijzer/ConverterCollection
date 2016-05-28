@@ -5,6 +5,7 @@ namespace Commands\transUpDown\Component\Model;
 use Commands\transUpDown\Component\Converter\Matcher\TransmissionMatcher;
 use Commands\transUpDown\Component\Reader\TransmissionFileReader;
 
+// Provider
 class Transmission
 {
     /** @var DownloadList */

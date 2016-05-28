@@ -4,11 +4,11 @@ namespace Commands\transUpDown\Component\Model;
 
 class DownloadStatus
 {
+    const IDLE = 'idle';
+    const DOWNLOADING = 'downloading';
     const STOPPED = 'stopped';
     const SEEDING = 'seeding';
     const FINISHED = 'finished';
-    const IDLE = 'idle';
-    const DOWNLOADING = 'downloading';
 
     private $name = '';
 
