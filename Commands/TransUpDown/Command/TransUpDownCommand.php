@@ -1,24 +1,21 @@
 <?php
 
-namespace Commands\transUpDown;
+namespace Commands\TransUpDown\Command;
 
-use Commands\transUpDown\Component\Model\Download;
-use Commands\transUpDown\Component\Model\Transmission;
+use Commands\TransUpDown\Component\Model\Transmission;
 use Console\CommandRequest;
 
 class TransUpDownCommand
 {
+    const NAME = 'trans-up-down';
+
     /** @var CommandRequest */
     private $request;
 
     public function __construct(CommandRequest $request)
     {
+        echo 'f';
         $this->request = $request;
-    }
-
-    public function getName()
-    {
-        return 'trans-up-down';
     }
 
     public function getInformation()
@@ -73,14 +70,7 @@ class TransUpDownCommand
         $downloadedItems = $transmission->getDownloads();
 
         foreach ($downloadedItems as $download) {
-            $name = implode(' | ', array(
-                $download->getId(),
-                $download->getName(),
-                $download->getDone(),
-                $download->getStatus()
-            ));
-
-            $this->request->printLine($name);
+            $this->request->printLine($download);
         }
     }
 }

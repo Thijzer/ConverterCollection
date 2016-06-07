@@ -1,21 +1,34 @@
 <?php
 
-class Spoon2TwigCommands
+namespace Commands\Spoon2Twig\Command;
+
+use Commands\Spoon2Twig\Helpers\SpoonAdapter;
+use Console\CommandRequest;
+use Console\Init;
+use FileManager\FileManager;
+
+class Spoon2TwigCommand
 {
     /** @var CommandRequest  */
     private $commandRequest;
     /** @var FileManager  */
     private $fileManager;
+    /** @var SpoonAdapter */
+    private $spoonAdapter;
+    /** @var Init */
+    private $init;
 
-    public function __construct(CommandRequest $command, FileManager $fileManager, Converter $converter, SpoonAdapter $spoonAdapter)
+    public function __construct(CommandRequest $command, Init $init)
     {
+        $this->fileManager = new FileManager($init->getListener());
+        $this->spoonAdapter = new SpoonAdapter();
         $this->commandRequest = $command;
-        $this->fileManager = $fileManager;
-        $this->spoonAdapter = $spoonAdapter;
-        $this->converter = $converter;
+        $this->init = $init;
+    }
 
-        $this->start();
-        $this->commandRequest->displayMessages();
+    public function getName()
+    {
+        return 'spoon-2-twig';
     }
 
     public function start()
@@ -119,18 +132,3 @@ class Spoon2TwigCommands
         }
     }
 }
-
-spl_autoload_register(function ($class_name) {
-    include $class_name . '.php';
-});
-
-// DI
-$commandRequest = New CommandRequest($argv, new ErrorCollector(), new Logger());
-$subscriber = new Subscriber(new TimeTracker(), $commandRequest);
-$listener = new Listener($subscriber);
-$fileManager = new FileManager($listener);
-$converter = new Converter(new SpoonRecipe() ,$listener);
-
-
-// START COMMAND
-New Spoon2TwigCommand($commandRequest, $fileManager, $converter,  new SpoonAdapter());

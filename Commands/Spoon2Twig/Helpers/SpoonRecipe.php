@@ -1,5 +1,11 @@
 <?php
 
+namespace Commands\spoon2twig\Helpers;
+
+use Converter\Converter;
+use Converter\Strategy;
+use FileManager\File;
+
 class SpoonRecipe implements Strategy
 {
     /** @var  Converter */
