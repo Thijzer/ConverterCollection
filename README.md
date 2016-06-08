@@ -15,6 +15,8 @@ cd spoon2twigconverter
 composer install
 ```
 
+After you have converted your files you can savely remove the spoon2twigconverter. 
+
 ## Example for spoon2twig
 Now we can convert all SpoonTemplates to Twig templates
 ```bash
