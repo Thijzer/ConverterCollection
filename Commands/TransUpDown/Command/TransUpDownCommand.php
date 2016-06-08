@@ -14,14 +14,13 @@ class TransUpDownCommand
 
     public function __construct(CommandRequest $request)
     {
-        echo 'f';
         $this->request = $request;
     }
 
     public function getInformation()
     {
         $this->request->printLine(
-            'usage: -sleep -wake -clean -list'
+            'usage: --sleep --wake --clean --list --remove'
         );
     }
 
@@ -40,6 +39,9 @@ class TransUpDownCommand
                 break;
             case $request->hasCommand('--list', 1):
                 $this->listCommand();
+                break;
+            case $request->hasCommand('--remove', 1):
+                $this->removeCommand();
                 break;
             default:
                 $this->getInformation();
@@ -62,6 +64,12 @@ class TransUpDownCommand
     {
         $transmission = new Transmission();
         $transmission->cleanUp();
+    }
+
+    public function removeCommand()
+    {
+        $transmission = new Transmission();
+        $transmission->remove();
     }
 
     public function listCommand()

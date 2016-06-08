@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands\transUpDown\Component\Reader;
+namespace Commands\TransUpDown\Component\Reader;
 
 // implements FileManager \ FilerReader
 class TransmissionFileReader
@@ -16,7 +16,9 @@ class TransmissionFileReader
         $this->transmission = "transmission-remote -N ~/.netrc.transmission --auth=$user:$pass";
         exec($this->transmission." --list | sed -e '1d' -e '\$d' -e '/^$/d' | awk '{print $1}'", $list);
 
+        // broken transmission files are marked with a star string on the id
         foreach ($list as $id) {
+            $id = str_replace('*', '', $id);
             $this->list[$id] = $this->read($id);
         }
     }

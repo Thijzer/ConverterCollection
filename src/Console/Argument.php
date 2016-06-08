@@ -18,4 +18,14 @@ class Argument
     {
         return $this->args;
     }
+
+    public function first()
+    {
+        return reset($this->args);
+    }
+
+    public function moveOneUp()
+    {
+        return new self($this->args);
+    }
 }

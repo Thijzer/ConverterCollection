@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands\transUpDown\Component\Model;
+namespace Commands\TransUpDown\Component\Model;
 
 class DownloadList
 {

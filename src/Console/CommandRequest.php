@@ -9,23 +9,16 @@ class CommandRequest
 {
     /** @var ErrorCollector  */
     private $errors;
-    /** @var  array */
+    /** @var Argument */
     private $arguments;
     /** @var Logger */
     private $logs;
 
-    public function __construct(array $argv, ErrorCollector $errors, Logger $logs)
+    public function __construct(Argument $arguments, ErrorCollector $errors, Logger $logs)
     {
         $this->errors = $errors;
         $this->logs = $logs;
-
-        // OUR INPUT
-        $this->arguments = $argv;
-
-        if (false === $this->existsCommand()) {
-            $this->printLine('no arguments given');
-            exit;
-        }
+        $this->arguments = $arguments->getArgs();
     }
 
     public function errors()

@@ -16,17 +16,56 @@ class Init
 
     public function __construct(Argument $arg)
     {
-        $this->commandRequest = new CommandRequest($arg->getArgs(), new ErrorCollector(), new Logger());
+        $this->commandRequest = new CommandRequest($arg, new ErrorCollector(), new Logger());
         $this->subscriber = new Subscriber(new TimeTracker(), $this->commandRequest);
         $this->listener = new Listener($this->subscriber);
 
-        $this->getTransUpDown();
+        foreach ($this->getSources() as $commandName => $source) {
+            if ($commandName === $arg->first()) {
+                $command = new $source['FQCN']($this->commandRequest, $this);
+                $command->start();
+            }
+        }
+
+        if (!isset($command)) {
+            $this->commandRequest->errors()
+                ->addError('following command are supported : '.implode(', ', array_keys($this->getSources())));
+        }
+
+        $this->commandRequest->displayMessages();
     }
 
-    public function getTransUpDown()
+    public function getSources()
     {
-        $command = new \Commands\transUpDown\TransUpDownCommand($this->commandRequest);
-        $command->start();
-        $this->commandRequest->displayMessages();
+        $sources = array_diff(scandir(__DIR__.'/../../Commands'), array('.', '..'));
+
+        $foundCommands = array();
+        foreach ($sources as $source) {
+            $className = 'Commands\\'.$source.'\\Command\\'.ucfirst($source).'Command';
+            if (class_exists($className)) {
+                $class = new \ReflectionClass($className);
+                if (null !== $commandName = $class->getConstant('NAME')) {
+                    $foundCommands[$commandName] = array('FQCN' => $className);
+                }
+            }
+        }
+
+        return $foundCommands;
+    }
+
+    /**
+     * @return \Event\Listener
+     */
+    public function getListener()
+    {
+        return $this->listener;
+    }
+
+    /**
+     * @return \Event\Subscriber
+     */
+    public function getSubscriber()
+    {
+        return $this->subscriber;
     }
 }

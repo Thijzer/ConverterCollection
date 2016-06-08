@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands\transUpDown\Component\Model;
+namespace Commands\TransUpDown\Component\Model;
 
 use FileManager\File;
 
@@ -85,6 +85,19 @@ class Download extends File
     public function getDownloadSize()
     {
         return $this->downloadSize;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode(' | ', array(
+            $this->getId(),
+            $this->getName(),
+            $this->getDone(),
+            $this->getStatus()
+        ));
     }
 
     public static function fromArray(array $download)

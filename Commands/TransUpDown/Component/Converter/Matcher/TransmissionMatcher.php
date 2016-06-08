@@ -1,9 +1,8 @@
 <?php
 
-namespace Commands\transUpDown\Component\Converter\Matcher;
+namespace Commands\TransUpDown\Component\Converter\Matcher;
 
-// needs to extends a matcher
-use Commands\transUpDown\Component\Model\DownloadStatus;
+use Commands\TransUpDown\Component\Model\DownloadStatus;
 
 class TransmissionMatcher
 {

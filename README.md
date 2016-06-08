@@ -1,17 +1,26 @@
-# ConverterCollection
+# Converter Collection
 
 --- experimental ----
 
-## Usage
-
-A the moment it's limited to Spoon2Twig conversions.
-
 ## Installation
 
-At the moment you best download the zip file and `unzip` it in your
-project `root folder`.
+At the moment you best install this Collection in a separate folder with git clone.
+After the clone is finished just run `composer install`.
 
-Run every command starting with `php Spoon2Twig/Spoon2TwigCommand.php`
+To be sure everything went right, execute the `bin/hercules` console command.
+You should be greeted with a set of options.
+
+## Usage
+
+Running the Spoon2Twig Converter.
+Run every command starting with `bin/hercules spoon2twig`
+
+>>> Currenty only the --all is tested and working!
+
+example command
+```php
+bin/hercules spoon2twig --all --source '/home/user/Projects/moduleMaker/src'
+```
 
 ### Spoon2Twig commands
 
@@ -30,12 +39,17 @@ Converts a module based on name
 --module <moduleName>
 ```
 
-Converts a single file in the project
+Converts a single file in the project (relative)
 ```php
 --file src/path/to/filename.tpl
 ```
 
-Additional commands
+Additional flag commands
+
+With this command you specify the root folder
+```php
+--source /path/to/project/source/src
+```
 
 Force the command with overwrite options
 ```php

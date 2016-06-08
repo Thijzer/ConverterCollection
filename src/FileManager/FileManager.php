@@ -71,7 +71,7 @@ class FileManager
             $fileName = $originalFile->getFilename().'-copy'.$originalFile->getExtension();
         }
 
-        return new File($fileName, $originalFile->getContent());
+        return new File($originalFile->getDirectory().'/'.$fileName, $originalFile->getContent());
     }
 
     public function write(File $newFile, $isForced = false)

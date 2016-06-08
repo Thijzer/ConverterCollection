@@ -3,6 +3,7 @@
 namespace Event;
 
 use Console\CommandRequest;
+use FileManager\File;
 use Tracking\TimeTracker;
 
 class Subscriber

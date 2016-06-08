@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands\spoon2twig\Helpers;
+namespace Commands\Spoon2Twig\Helpers;
 
 class SpoonAdapter
 {
@@ -8,6 +8,9 @@ class SpoonAdapter
         'absolute' => 'false',
         'version' => '3.9',
     );
+
+    /** @var string */
+    private $source;
 
     public $baseFrontendTheme = array(
         'Frontend/Themes/*/Core/Layout/Templates',
@@ -42,8 +45,11 @@ class SpoonAdapter
         $this->source .= $this->getCorrectSourceVersion($this->options['version']);
     }
 
-    public function getAllSpoonBasePaths()
+    public function getAllSpoonBasePaths($sourceDir = null)
     {
+        if ($sourceDir) {
+            $this->source = $sourceDir.'/';
+        }
         return $this->addRoot(array_merge(
             $this->baseFrontendTheme,
             $this->baseFrontendThemeModule,

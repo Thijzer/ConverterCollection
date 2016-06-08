@@ -3,70 +3,78 @@
 namespace Commands\Spoon2Twig\Command;
 
 use Commands\Spoon2Twig\Helpers\SpoonAdapter;
+use Commands\Spoon2Twig\Helpers\SpoonRecipe;
 use Console\CommandRequest;
 use Console\Init;
+use Converter\Converter;
+use FileManager\File;
 use FileManager\FileManager;
 
 class Spoon2TwigCommand
 {
+    const NAME = 'spoon2twig';
+
     /** @var CommandRequest  */
-    private $commandRequest;
+    private $request;
     /** @var FileManager  */
     private $fileManager;
     /** @var SpoonAdapter */
     private $spoonAdapter;
     /** @var Init */
     private $init;
+    /** @var boolean */
+    private $isForced;
 
-    public function __construct(CommandRequest $command, Init $init)
+    public function __construct(CommandRequest $request, Init $init)
     {
         $this->fileManager = new FileManager($init->getListener());
         $this->spoonAdapter = new SpoonAdapter();
-        $this->commandRequest = $command;
+        $this->request = $request;
         $this->init = $init;
     }
 
-    public function getName()
+    public function getInformation()
     {
-        return 'spoon-2-twig';
+        $this->request->printLine(
+            'usage: --file --all --module --theme'
+        );
     }
 
     public function start()
     {
+        $request = $this->request;
         // GENERAL COMMANDS
-        $this->isForced = $this->commandRequest->hasCommand('--force', 2);
+        $this->isForced = $request->hasCommand('--force', 2);
 
         /** force converts a given file */
-        $inputFile = $this->commandRequest->grabArgument(2);
+        $inputFile = $request->grabArgument(2);
 
-        if ($this->commandRequest->hasCommand('--file', 1)) {
-            $this->convertFileCommand($inputFile);
-            return;
-        }
-
-        /** force converts all project files */
-        if ($this->commandRequest->hasCommand('--all')) {
-            $this->convertAllFilesCommand();
-            return;
-        }
-
-        /** Converts all module files */
-        if ($this->commandRequest->hasCommand('--module', 1)) {
-            $this->convertModuleCommand($inputFile);
-            return;
-        }
-
-        /** Converts all Theme files */
-        if ($this->commandRequest->hasCommand('--theme', 1)) {
-            $this->convertThemeCommand($inputFile);
-            return;
+        switch (true) {
+            case $request->hasCommand('--file', 1):
+                $this->convertFileCommand($inputFile);
+                break;
+            case $request->hasCommand('--all'):
+                $sourceDir = '';
+                if ($request->hasCommand('--source', 2)) {
+                    $sourceDir = $request->grabArgument(3);
+                }
+                $this->convertAllFilesCommand($sourceDir);
+                break;
+            case $request->hasCommand('--module', 1):
+                $this->convertModuleCommand($inputFile);
+                break;
+            case $request->hasCommand('--theme', 1):
+                $this->convertThemeCommand($inputFile);
+                break;
+            default:
+                $this->getInformation();
         }
     }
 
-    private function convertAllFilesCommand()
+    private function convertAllFilesCommand($sourceDir)
     {
         $dirs = array();
-        $paths = $this->spoonAdapter->getAllSpoonBasePaths();
+        $paths = $this->spoonAdapter->getAllSpoonBasePaths($sourceDir);
         foreach ($paths as $path) {
             $dirs = array_merge($dirs, $this->fileManager->scanDirectory($path));
         }
@@ -77,7 +85,7 @@ class Spoon2TwigCommand
     private function convertFileCommand($inputFile)
     {
         if (!file_exists($inputFile)) {
-            $this->commandRequest->errors()->addError('no file found for '.$inputFile);
+            $this->request->errors()->addError('no file found for '.$inputFile);
             return;
         }
 
@@ -92,7 +100,7 @@ class Spoon2TwigCommand
         $moduleDirectory = $this->spoonAdapter->getModuleDirectory($inputFile);
 
         if (!is_dir($moduleDirectory)) {
-            $this->commandRequest->errors()->addError('unknown module name '.$inputFile);
+            $this->request->errors()->addError('unknown module name '.$inputFile);
             return;
         }
 
@@ -104,7 +112,7 @@ class Spoon2TwigCommand
         $themeDirectory = $this->spoonAdapter->getFrontendThemeDirectory($inputFile);
 
         if (!is_dir($themeDirectory[0])) {
-            $this->commandRequest->errors()->addError('unknown theme name '.$inputFile);
+            $this->request->errors()->addError('unknown theme name '.$inputFile);
             return;
         }
 
@@ -119,15 +127,17 @@ class Spoon2TwigCommand
         }
 
         if (count($foundFiles)) {
+            $converter = new Converter(new SpoonRecipe(), $this->init->getListener());
+
+            /** @var File $file */
             foreach ($foundFiles as $file) {
                 $this->fileManager->write(
-                    $this->converter->parse($this->fileManager->copy($file, $file->getFilename().'.twig.html')),
+                    $converter->parse($this->fileManager->copy($file, $file->getFilename().'.twig.html')),
                     $this->isForced
                 );
-                exit;
             }
-            if ($this->converter->hasExcludedFiles()) {
-                $this->commandRequest->logs()->addLog('not all files are converted, use "--force" to overwrite');
+            if ($converter->hasExcludedFiles()) {
+                $this->request->logs()->addLog('not all files are converted, use "--force" to overwrite');
             }
         }
     }

@@ -2,6 +2,9 @@
 
 namespace Converter;
 
+use Event\Listener;
+use FileManager\File;
+
 class Converter
 {
     private $interationNr = 0;

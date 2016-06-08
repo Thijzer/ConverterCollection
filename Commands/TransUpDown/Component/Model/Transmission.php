@@ -1,9 +1,9 @@
 <?php
 
-namespace Commands\transUpDown\Component\Model;
+namespace Commands\TransUpDown\Component\Model;
 
-use Commands\transUpDown\Component\Converter\Matcher\TransmissionMatcher;
-use Commands\transUpDown\Component\Reader\TransmissionFileReader;
+use Commands\TransUpDown\Component\Converter\Matcher\TransmissionMatcher;
+use Commands\TransUpDown\Component\Reader\TransmissionFileReader;
 
 // Provider
 class Transmission
@@ -27,7 +27,7 @@ class Transmission
     }
 
     /**
-     * @return \Commands\transUpDown\Component\Model\Download[]
+     * @return \Commands\TransUpDown\Component\Model\Download[]
      */
     public function getDownloads()
     {
@@ -54,6 +54,13 @@ class Transmission
             if ($download->isCompleted()) {
                 $this->reader->clean($download->getId());
             }
+        }
+    }
+
+    public function remove()
+    {
+        foreach ($this->getDownloads() as $download) {
+            $this->reader->clean($download->getId());
         }
     }
 }

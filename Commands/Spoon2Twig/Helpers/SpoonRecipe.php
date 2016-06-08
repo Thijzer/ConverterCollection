@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands\spoon2twig\Helpers;
+namespace Commands\Spoon2Twig\Helpers;
 
 use Converter\Converter;
 use Converter\Strategy;
@@ -50,7 +50,7 @@ class SpoonRecipe implements Strategy
         $filedata = str_replace('*}', '#}', $filedata); // comments
         $filedata = str_replace('{*', '{#', $filedata); // comments
         $filedata = str_replace('|ucfirst', '|capitalize', $filedata);
-        $filedata = str_replace('.tpl', $this->extension, $filedata);
+        $filedata = str_replace('.tpl', '.'.$this->extension, $filedata);
         $filedata = str_replace("\t", "  ", $filedata);
 
         // raw converter
@@ -60,9 +60,8 @@ class SpoonRecipe implements Strategy
         $filedata = str_replace(' meta ', ' meta|raw ', $filedata);
         $filedata = str_replace('blockContent', 'blockContent|raw', $filedata);
 
-
         // includes
-        $filedata = $this->pregReplaceSprintf('/{include:(.*)}/i', '{%% include "%s" %%}', $filedata); // for includes
+        $filedata = $this->pregReplaceSprintf('/{include:(.*?)}/i', '{%% include "%s" %%}', $filedata); // for includes
 
         // operators
         $filedata = $this->pregReplaceSprintf('/{option:!(.*?)}/i', '{%% if not %s %%}', $filedata);
@@ -93,6 +92,10 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/act.(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/msg.(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/err.(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
+
+        // tabs spaces
+        $filedata = str_replace("\t", "    ", $filedata);
+        $filedata = str_replace("    ", "  ", $filedata);
 
         return $filedata;
     }
