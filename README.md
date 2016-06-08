@@ -4,18 +4,23 @@
 
 ## Installation
 
-At the moment you best install this Collection in a separate folder with git clone.
-
-After the clone is finished just run `composer install`.
-
-To be sure the Installation went fine, execute the `bin/hercules` console command.
-You should be greeted with a set of options.
-
-
-example command
-```php
-bin/hercules spoon2twig --all --source '/home/user/Projects/moduleMaker/src'
+We need to clone this repo to a folder (spoon2twigconverter) in our project
+```bash
+git clone https://github.com/thijzer/ConverterCollection spoon2twigconverter
 ```
+
+Now we need to install composer for that generated folder (spoon2twigconverter)
+```bash
+cd spoon2twigconverter
+composer install
+```
+
+## Example for spoon2twig
+Now we can convert all SpoonTemplates to Twig templates
+```bash
+bin/hercules spoon2twig --all --source '/users/YOUR-USERNAME/Documents/my-fork-project/src'
+```
+> NOTE: Change 'YOUR-USERNAME' by your own.
 
 ### Spoon2Twig commands
 
