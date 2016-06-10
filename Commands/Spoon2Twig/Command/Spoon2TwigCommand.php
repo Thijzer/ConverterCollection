@@ -132,7 +132,7 @@ class Spoon2TwigCommand
             /** @var File $file */
             foreach ($foundFiles as $file) {
                 $this->fileManager->write(
-                    $converter->parse($this->fileManager->copy($file, $file->getFilename().'.twig.html')),
+                    $converter->parse($this->fileManager->copy($file, $file->getFilename().'.html.twig')),
                     $this->isForced
                 );
             }
