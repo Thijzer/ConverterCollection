@@ -89,8 +89,11 @@ class Spoon2TwigCommand
             return;
         }
 
+        $converter = new Converter(new SpoonRecipe(), $this->init->getListener());
+
+        $file = new File($inputFile);
         $this->fileManager->write(
-            $this->converter->ruleParser($this->fileManager->getFile($inputFile)),
+            $converter->parse($this->fileManager->copy($file, $file->getFilename().'.twig.html')),
             $this->isForced
         );
     }

@@ -10,7 +10,7 @@ class SpoonRecipe implements Strategy
 {
     /** @var  Converter */
     private $converter;
-    private $extension = 'twig.html';
+    private $extension = 'html.twig';
 
     public function start(File $file, Converter $converter)
     {
@@ -51,7 +51,6 @@ class SpoonRecipe implements Strategy
         $filedata = str_replace('{*', '{#', $filedata); // comments
         $filedata = str_replace('|ucfirst', '|capitalize', $filedata);
         $filedata = str_replace('.tpl', '.'.$this->extension, $filedata);
-        $filedata = str_replace("\t", "  ", $filedata);
 
         // raw converter
         $filedata = str_replace('siteHTMLHeader', 'siteHTMLHeader|raw', $filedata);
@@ -83,17 +82,18 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/{cache:(.*?)}/i', '{# cache(%s) #}', $filedata);
 
         // labels
-        $filedata = $this->pregReplaceSprintf('/{{ lbl(.*?) }}/i', '{{ lbl.%s }}', $filedata);
-        $filedata = $this->pregReplaceSprintf('/{{ msg(.*?) }}/i', '{{ msg.%s }}', $filedata);
-        $filedata = $this->pregReplaceSprintf('/{{ err(.*?) }}/i', '{{ err.%s }}', $filedata);
-        $filedata = $this->pregReplaceSprintf('/{{ act(.*?) }}/i', '{{ act.%s }}', $filedata);
-
         $filedata = $this->pregReplaceSprintf('/lbl.(.*?)[!^|]/i', "'lbl.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/act.(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/msg.(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/err.(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
+        
+        $filedata = $this->pregReplaceSprintf('/{{ lbl([\w]+) }}/i', "{{ 'lbl.%s'|trans }}", $filedata);
+        $filedata = $this->pregReplaceSprintf('/{{ msg([\w]+) }}/i', "{{ 'msg.%s'|trans }}", $filedata);
+        $filedata = $this->pregReplaceSprintf('/{{ err([\w]+) }}/i', "{{ 'err.%s'|trans }}", $filedata);
+        $filedata = $this->pregReplaceSprintf('/{{ act([\w]+) }}/i', "{{ 'act.%s'|trans }}", $filedata);
 
         // tabs spaces
+        //$filedata = str_replace("\t", "  ", $filedata);
         $filedata = str_replace("\t", "    ", $filedata);
         $filedata = str_replace("    ", "  ", $filedata);
 
