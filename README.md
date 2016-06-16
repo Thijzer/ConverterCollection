@@ -31,8 +31,6 @@ bin/hercules spoon2twig --all --source '/users/YOUR-USERNAME/Documents/my-fork-p
 Running the Spoon2Twig Converter.
 Run every command starting with `bin/hercules spoon2twig`
 
->>> Currently only the --all feature is tested and working!
-
 #### Commands
 
 Converts every Spoon .tpl in the project

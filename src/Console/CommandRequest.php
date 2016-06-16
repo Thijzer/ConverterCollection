@@ -13,12 +13,14 @@ class CommandRequest
     private $arguments;
     /** @var Logger */
     private $logs;
+    /** @var string */
+    private $command;
 
     public function __construct(Argument $arguments, ErrorCollector $errors, Logger $logs)
     {
         $this->errors = $errors;
         $this->logs = $logs;
-        $this->arguments = $arguments->getArgs();
+        $this->arguments = $arguments;
     }
 
     public function errors()
@@ -59,18 +61,14 @@ class CommandRequest
         $this->displayLogs();
     }
 
-    public function hasCommand($command = '', $index = 1)
+    public function hasCommand($command)
     {
-        return ($this->existsCommand($index) && $this->arguments[$index] === $command);
+        return in_array($command, array_values($this->arguments->getArgs()));
     }
 
-    public function existsCommand($index = 1)
+    public function getNextArgumentAfter($command)
     {
-        return array_key_exists($index, $this->arguments);
-    }
-
-    public function grabArgument($index = 1)
-    {
-        return $this->existsCommand($index) ? (string) trim($this->arguments[$index]) : null;
+        $arguments = $this->arguments->buildFromArgument($command);
+        return $arguments->first();
     }
 }

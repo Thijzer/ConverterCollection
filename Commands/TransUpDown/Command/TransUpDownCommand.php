@@ -28,19 +28,19 @@ class TransUpDownCommand
     {
         $request = $this->request;
         switch (true) {
-            case $request->hasCommand('--clean', 1):
+            case $request->hasCommand('--clean'):
                 $this->cleanCommand();
                 break;
-            case $request->hasCommand('--wake', 1):
+            case $request->hasCommand('--wake'):
                 $this->wakeCommand();
                 break;
-            case $request->hasCommand('--sleep', 1):
+            case $request->hasCommand('--sleep'):
                 $this->sleepCommand();
                 break;
-            case $request->hasCommand('--list', 1):
+            case $request->hasCommand('--list'):
                 $this->listCommand();
                 break;
-            case $request->hasCommand('--remove', 1):
+            case $request->hasCommand('--remove'):
                 $this->removeCommand();
                 break;
             default:

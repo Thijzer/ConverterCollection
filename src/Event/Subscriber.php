@@ -30,7 +30,7 @@ class Subscriber
     public function fileIsWriteProtected(File $file)
     {
         $this->command->printLine(
-            'twig version of ' . $file->getBasename() . ' found, use the "-f" parameter to overwrite'
+            'twig version ' . $file->getBasename() . ' found, use the "-f" parameter to overwrite'
         );
     }
 }

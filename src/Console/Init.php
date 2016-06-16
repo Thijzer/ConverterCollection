@@ -16,6 +16,7 @@ class Init
 
     public function __construct(Argument $arg)
     {
+        $arg = $arg->moveOneUp();
         $this->commandRequest = new CommandRequest($arg, new ErrorCollector(), new Logger());
         $this->subscriber = new Subscriber(new TimeTracker(), $this->commandRequest);
         $this->listener = new Listener($this->subscriber);

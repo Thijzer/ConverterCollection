@@ -44,27 +44,24 @@ class Spoon2TwigCommand
     {
         $request = $this->request;
         // GENERAL COMMANDS
-        $this->isForced = $request->hasCommand('--force', 2);
-
-        /** force converts a given file */
-        $inputFile = $request->grabArgument(2);
+        $this->isForced = $request->hasCommand('-f');
 
         switch (true) {
-            case $request->hasCommand('--file', 1):
-                $this->convertFileCommand($inputFile);
+            case $request->hasCommand('--file'):
+                $this->convertFileCommand($request->getNextArgumentAfter('--file'));
                 break;
             case $request->hasCommand('--all'):
                 $sourceDir = '';
-                if ($request->hasCommand('--source', 2)) {
-                    $sourceDir = $request->grabArgument(3);
+                if ($request->hasCommand('--source')) {
+                    $sourceDir = $request->getNextArgumentAfter('--source');
                 }
                 $this->convertAllFilesCommand($sourceDir);
                 break;
-            case $request->hasCommand('--module', 1):
-                $this->convertModuleCommand($inputFile);
+            case $request->hasCommand('--module'):
+                $this->convertModuleCommand($request->getNextArgumentAfter('--module'));
                 break;
-            case $request->hasCommand('--theme', 1):
-                $this->convertThemeCommand($inputFile);
+            case $request->hasCommand('--theme'):
+                $this->convertThemeCommand($request->getNextArgumentAfter('--theme'));
                 break;
             default:
                 $this->getInformation();

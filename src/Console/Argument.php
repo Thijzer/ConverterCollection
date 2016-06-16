@@ -9,7 +9,6 @@ class Argument
 
     public function __construct(array $args)
     {
-        array_shift($args);
         $this->args = $args;
     }
 
@@ -24,8 +23,20 @@ class Argument
         return reset($this->args);
     }
 
+    public function getIndex($command)
+    {
+        return array_search($command, $this->args);
+    }
+
+    public function buildFromArgument($command)
+    {
+        $index = $this->getIndex($command);
+        return new self(array_slice($this->args, ++$index));
+    }
+
     public function moveOneUp()
     {
+        array_shift($this->args);
         return new self($this->args);
     }
 }
