@@ -82,10 +82,10 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/{cache:(.*?)}/i', '{# cache(%s) #}', $filedata);
 
         // labels
-        $filedata = $this->pregReplaceSprintf('/lbl.(.*?)[!^|]/i', "'lbl.%s'|trans|", $filedata);
-        $filedata = $this->pregReplaceSprintf('/act.(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
-        $filedata = $this->pregReplaceSprintf('/msg.(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
-        $filedata = $this->pregReplaceSprintf('/err.(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
+        $filedata = $this->pregReplaceSprintf('/lbl(.*?)[!^|]/i', "'lbl.%s'|trans|", $filedata);
+        $filedata = $this->pregReplaceSprintf('/act(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
+        $filedata = $this->pregReplaceSprintf('/msg(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
+        $filedata = $this->pregReplaceSprintf('/err(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
         
         $filedata = $this->pregReplaceSprintf('/{{ lbl([\w]+) }}/i', "{{ 'lbl.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ msg([\w]+) }}/i', "{{ 'msg.%s'|trans }}", $filedata);
