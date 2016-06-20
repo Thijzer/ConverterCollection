@@ -68,9 +68,7 @@ class Converter
      */
     public function dePluralize($noun)
     {
-        $nouns = array(
-            'modules' => 'module'
-        );
+        $nouns = require_once(__DIR__.'nounList.php');
 
         // shorten
         $new_plur = pathinfo($noun);
