@@ -23,14 +23,25 @@ class Argument
         return reset($this->args);
     }
 
-    public function getIndex($command)
+    public function getNext()
     {
-        return array_search($command, $this->args);
+        array_shift($this->args);
+        return $this->first();
     }
 
-    public function buildFromArgument($command)
+    public function getIndex($argument)
     {
-        $index = $this->getIndex($command);
+        return array_search($argument, $this->args);
+    }
+
+    public function hasArgument($argument)
+    {
+        return in_array($argument, $this->args);
+    }
+
+    public function buildFromArgument($argument)
+    {
+        $index = $this->getIndex($argument);
         return new self(array_slice($this->args, ++$index));
     }
 

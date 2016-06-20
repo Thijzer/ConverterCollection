@@ -46,16 +46,19 @@ class Spoon2TwigCommand
         // GENERAL COMMANDS
         $this->isForced = $request->hasCommand('-f');
 
+        // override the source dir when given
+        if ($request->hasCommand('--source')) {
+            $this->spoonAdapter->getAllSpoonBasePaths(
+                $request->getNextArgumentAfter('--source')
+            );
+        }
+
         switch (true) {
             case $request->hasCommand('--file'):
                 $this->convertFileCommand($request->getNextArgumentAfter('--file'));
                 break;
             case $request->hasCommand('--all'):
-                $sourceDir = '';
-                if ($request->hasCommand('--source')) {
-                    $sourceDir = $request->getNextArgumentAfter('--source');
-                }
-                $this->convertAllFilesCommand($sourceDir);
+                $this->convertAllFilesCommand();
                 break;
             case $request->hasCommand('--module'):
                 $this->convertModuleCommand($request->getNextArgumentAfter('--module'));
@@ -68,10 +71,10 @@ class Spoon2TwigCommand
         }
     }
 
-    private function convertAllFilesCommand($sourceDir)
+    private function convertAllFilesCommand()
     {
         $dirs = array();
-        $paths = $this->spoonAdapter->getAllSpoonBasePaths($sourceDir);
+        $paths = $this->spoonAdapter->getAllSpoonBasePaths();
         foreach ($paths as $path) {
             $dirs = array_merge($dirs, $this->fileManager->scanDirectory($path));
         }
@@ -87,7 +90,6 @@ class Spoon2TwigCommand
         }
 
         $converter = new Converter(new SpoonRecipe(), $this->init->getListener());
-
         $file = new File($inputFile);
         $this->fileManager->write(
             $converter->parse($this->fileManager->copy($file, $file->getFilename().'.twig.html')),
@@ -95,24 +97,22 @@ class Spoon2TwigCommand
         );
     }
 
-    private function convertModuleCommand($inputFile)
+    private function convertModuleCommand($moduleName)
     {
-        $moduleDirectory = $this->spoonAdapter->getModuleDirectory($inputFile);
-
+        $moduleDirectory = $this->spoonAdapter->getModuleDirectory($moduleName);
         if (!is_dir($moduleDirectory)) {
-            $this->request->errors()->addError('unknown module name '.$inputFile);
+            $this->request->errors()->addError('unknown module name '.$moduleName);
             return;
         }
 
         $this->fileConverter($this->spoonAdapter->getModulePaths());
     }
 
-    private function convertThemeCommand($inputFile)
+    private function convertThemeCommand($themeName)
     {
-        $themeDirectory = $this->spoonAdapter->getFrontendThemeDirectory($inputFile);
-
+        $themeDirectory = $this->spoonAdapter->getFrontendThemeDirectory($themeName);
         if (!is_dir($themeDirectory[0])) {
-            $this->request->errors()->addError('unknown theme name '.$inputFile);
+            $this->request->errors()->addError('unknown theme name '.$themeName);
             return;
         }
 

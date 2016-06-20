@@ -7,14 +7,12 @@ use Exception\Logger;
 
 class CommandRequest
 {
-    /** @var ErrorCollector  */
+    /** @var ErrorCollector */
     private $errors;
     /** @var Argument */
     private $arguments;
     /** @var Logger */
     private $logs;
-    /** @var string */
-    private $command;
 
     public function __construct(Argument $arguments, ErrorCollector $errors, Logger $logs)
     {
@@ -63,12 +61,18 @@ class CommandRequest
 
     public function hasCommand($command)
     {
-        return in_array($command, array_values($this->arguments->getArgs()));
+        return $this->arguments->hasArgument($command);
     }
 
     public function getNextArgumentAfter($command)
     {
         $arguments = $this->arguments->buildFromArgument($command);
         return $arguments->first();
+    }
+
+    /** @return \Console\Argument */
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 }

@@ -15,7 +15,7 @@ cd spoon2twigconverter
 composer install
 ```
 
-After you have converted your files you can savely remove the spoon2twigconverter. 
+After you have converted your files you can savely remove the spoon2twigconverter.
 
 ## Example for spoon2twig
 Now we can convert all SpoonTemplates to Twig templates
@@ -32,6 +32,12 @@ Running the Spoon2Twig Converter.
 Run every command starting with `bin/hercules spoon2twig`
 
 #### Commands
+
+>  WARNING:
+>
+>  Default no source dir needs to be provided.
+>  But I don't recommend installing the converter inside your project Folder
+>  so for now use the --source option for commands (--all, --theme, --module)
 
 Converts every Spoon .tpl in the project
 ```php
@@ -50,12 +56,12 @@ Converts a module based on name
 
 Converts a single file in the project (relative)
 ```php
---file src/path/to/filename.tpl
+--file /path/to/filename.tpl
 ```
 
-#### Additional flag commands
+#### Optional arguments
 
-With this command you specify the root folder
+With this argument you specify the root (src) folder of your Project
 ```php
 --source /path/to/project/source/src
 ```
