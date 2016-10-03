@@ -35,7 +35,7 @@ class SpoonRecipe implements Strategy
         // filters
         $filedata = $this->pregReplaceSprintf('/\|date:(.*?)}/', '|spoondate(%s) }', $filedata, 'comma');
         $filedata = $this->pregReplaceSprintf('/\|date:(.*?)}/', '|date(%s) }', $filedata);
-        $filedata = $this->pregReplaceSprintf('/\|sprintf:(.*?)}/', '|sprintf(%s) }', $filedata);
+        $filedata = $this->pregReplaceSprintf('/\|sprintf:(.*?)}/', '|format(%s)|raw }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|usersetting:(.*?)}/', '|usersetting(%s) }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|geturlforblock:(.*?)}/', '|geturlforblock(%s) }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|getnavigation:(.*?)}/', '|getnavigation(%s)|raw }', $filedata, 'comma');
