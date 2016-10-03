@@ -53,6 +53,10 @@ class SpoonRecipe implements Strategy
         $filedata = str_replace('|ucfirst', '|capitalize', $filedata);
         $filedata = str_replace('.tpl', '.'.$this->extension, $filedata);
 
+        // replace deprecated stuff for the positions
+        $filedata = str_replace("BlockIsHTML", 'BlockIsEditor', $filedata);
+        $filedata = str_replace(".blockContent", '.html|raw', $filedata);
+
         // raw converter
         $filedata = str_replace('siteHTMLHeader', 'siteHTMLHeader|raw', $filedata);
         $filedata = str_replace('siteHTMLFooter', 'siteHTMLFooter|raw', $filedata);
