@@ -80,7 +80,6 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/{{ ddm(.*?) }}/i', '{%% form_field %s %%}', $filedata, 'snakeCase');
         $filedata = $this->pregReplaceSprintf('/{{ chk(.*?) }}/i', '{%% form_field %s %%}', $filedata, 'snakeCase');
         $filedata = $this->pregReplaceSprintf('/form_field (.*?)_error/i', 'form_field_error %s', $filedata);
-        //$filedata = $this->pregReplaceSprintf('/{% if (.*?)Error %}/i', '{%% if form_field_error %s %%}', $filedata, 'snakeCase');
 
         // caching // disabled
         $filedata = $this->pregReplaceSprintf('/{\/cache:(.*?)}/i', '{# endcache #}', $filedata);
@@ -91,14 +90,13 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/act(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/msg(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/err(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
-        
+
         $filedata = $this->pregReplaceSprintf('/{{ lbl([\w]+) }}/i', "{{ 'lbl.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ msg([\w]+) }}/i', "{{ 'msg.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ err([\w]+) }}/i', "{{ 'err.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ act([\w]+) }}/i', "{{ 'act.%s'|trans }}", $filedata);
 
         // tabs spaces
-        //$filedata = str_replace("\t", "  ", $filedata);
         $filedata = str_replace("\t", "    ", $filedata);
         $filedata = str_replace("    ", "  ", $filedata);
 
