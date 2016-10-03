@@ -50,7 +50,6 @@ class SpoonRecipe implements Strategy
         // string replacers
         $filedata = str_replace('*}', '#}', $filedata); // comments
         $filedata = str_replace('{*', '{#', $filedata); // comments
-        $filedata = str_replace('|ucfirst', '|capitalize', $filedata);
         $filedata = str_replace('.tpl', '.'.$this->extension, $filedata);
 
         // replace deprecated stuff for the positions
