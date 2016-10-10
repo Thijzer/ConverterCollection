@@ -33,13 +33,14 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/{\$(.*?)}/ism', '{{ %s }}', $filedata);
 
         // filters
-        $filedata = $this->pregReplaceSprintf('/\|date:(.*?)}/', '|spoon_date(%s) }', $filedata, 'comma');
+        $filedata = $this->pregReplaceSprintf('/\|date:(.*?)}/', '|spoondate(%s) }', $filedata, 'comma');
         $filedata = $this->pregReplaceSprintf('/\|date:(.*?)}/', '|date(%s) }', $filedata);
-        $filedata = $this->pregReplaceSprintf('/\|sprintf:(.*?)}/', '|sprintf(%s) }', $filedata);
+        $filedata = $this->pregReplaceSprintf('/\|substring:(.*?)}/', '|slice(%s) }', $filedata, 'comma');
+        $filedata = $this->pregReplaceSprintf('/\|sprintf:(.*?)}/', '|format(%s)|raw }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|usersetting:(.*?)}/', '|usersetting(%s) }', $filedata);
-        $filedata = $this->pregReplaceSprintf('/\|geturlforblock:(.*?)}/', '|geturlforblock(%s) }', $filedata);
-        $filedata = $this->pregReplaceSprintf('/\|getnavigation:(.*?)}/', '|getnavigation(%s)|raw }', $filedata, 'comma');
-        $filedata = $this->pregReplaceSprintf('/\|getsubnavigation:(.*?)}/', '|getsubnavigation(%s)|raw }', $filedata, 'comma');
+        $filedata = $this->pregReplaceSprintf('/var\|geturlforblock:(.*?)}/', 'geturlforblock(%s) }', $filedata, 'comma');
+        $filedata = $this->pregReplaceSprintf('/var\|getnavigation:(.*?)}/', 'getnavigation(%s)|raw }', $filedata, 'comma');
+        $filedata = $this->pregReplaceSprintf('/var\|getsubnavigation:(.*?)}/', 'getsubnavigation(%s)|raw }', $filedata, 'comma');
         $filedata = str_replace('/\|getmainnavigation}/', '|getmainnavigation|raw }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|truncate:(.*?)}/', '|truncate(%s) }', $filedata);
         $filedata = $this->pregReplaceSprintf('/\|geturl:(.*?)}/', '|geturl(%s) }', $filedata, 'comma');
@@ -49,8 +50,11 @@ class SpoonRecipe implements Strategy
         // string replacers
         $filedata = str_replace('*}', '#}', $filedata); // comments
         $filedata = str_replace('{*', '{#', $filedata); // comments
-        $filedata = str_replace('|ucfirst', '|capitalize', $filedata);
         $filedata = str_replace('.tpl', '.'.$this->extension, $filedata);
+
+        // replace deprecated stuff for the positions
+        $filedata = str_replace('BlockIsHTML', 'BlockIsEditor', $filedata);
+        $filedata = str_replace('.blockContent', '.html|raw', $filedata);
 
         // raw converter
         $filedata = str_replace('siteHTMLHeader', 'siteHTMLHeader|raw', $filedata);
@@ -75,7 +79,6 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/{{ ddm(.*?) }}/i', '{%% form_field %s %%}', $filedata, 'snakeCase');
         $filedata = $this->pregReplaceSprintf('/{{ chk(.*?) }}/i', '{%% form_field %s %%}', $filedata, 'snakeCase');
         $filedata = $this->pregReplaceSprintf('/form_field (.*?)_error/i', 'form_field_error %s', $filedata);
-        //$filedata = $this->pregReplaceSprintf('/{% if (.*?)Error %}/i', '{%% if form_field_error %s %%}', $filedata, 'snakeCase');
 
         // caching // disabled
         $filedata = $this->pregReplaceSprintf('/{\/cache:(.*?)}/i', '{# endcache #}', $filedata);
@@ -86,14 +89,13 @@ class SpoonRecipe implements Strategy
         $filedata = $this->pregReplaceSprintf('/act(.*?)[!^|]/i', "'act.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/msg(.*?)[!^|]/i', "'msg.%s'|trans|", $filedata);
         $filedata = $this->pregReplaceSprintf('/err(.*?)[!^|]/i', "'err.%s'|trans|", $filedata);
-        
+
         $filedata = $this->pregReplaceSprintf('/{{ lbl([\w]+) }}/i', "{{ 'lbl.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ msg([\w]+) }}/i', "{{ 'msg.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ err([\w]+) }}/i', "{{ 'err.%s'|trans }}", $filedata);
         $filedata = $this->pregReplaceSprintf('/{{ act([\w]+) }}/i', "{{ 'act.%s'|trans }}", $filedata);
 
         // tabs spaces
-        //$filedata = str_replace("\t", "  ", $filedata);
         $filedata = str_replace("\t", "    ", $filedata);
         $filedata = str_replace("    ", "  ", $filedata);
 
