@@ -12,6 +12,7 @@ class SpoonRecipe implements Strategy
     private $converter;
     private $extension = 'html.twig';
 
+    /** @return File */
     public function start(File $file, Converter $converter)
     {
         $this->converter = $converter;
